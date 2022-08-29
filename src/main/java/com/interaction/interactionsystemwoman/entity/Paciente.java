@@ -16,7 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 public class Paciente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "paciente_sequence",
+            sequenceName = "paciente_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "paciente_sequence"
+    )
     @Column(
             name = "id",
             updatable = false

@@ -24,7 +24,8 @@ public class Usuario {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "usuario_sequence"
-    )    @Column(
+    )
+    @Column(
             name = "id",
             updatable = false
     )

@@ -15,7 +15,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Consulta {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "consulta_sequence",
+            sequenceName = "consulta_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "consulta_sequence"
+    )
     @Column(
             name = "id",
             updatable = false

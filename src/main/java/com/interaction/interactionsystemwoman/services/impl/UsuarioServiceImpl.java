@@ -94,6 +94,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private Usuario getUsuarioEntity(Integer id) throws GeneralException{
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("NOT FOUND-404","CONSULTA_NOTFOUND-404"));
+                .orElseThrow(() -> new NotFoundException("NOT FOUND-404","USUARIO_NOTFOUND-404"));
     }
 }

@@ -13,7 +13,7 @@ public interface PacienteService {
 
     List<PacienteDTO> getPacientes() throws GeneralException;
 
-    PacienteDTO updatePaciente(Integer id, PacienteDTO PacienteDTO) throws GeneralException;
+    PacienteDTO updatePaciente(PacienteDTO pacienteDTO) throws GeneralException;
 
     void deletePaciente(Integer id) throws GeneralException;
 }
