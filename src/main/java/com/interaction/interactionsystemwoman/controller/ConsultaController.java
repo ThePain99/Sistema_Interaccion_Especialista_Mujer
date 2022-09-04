@@ -33,9 +33,12 @@ public class ConsultaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
-    public GeneralResponse<List<ConsultaDTO>> getConsultas() throws GeneralException {
+    public GeneralResponse<List<ConsultaDTO>> getConsultas(
+            @RequestParam(name = "usuarioId", required = false) Integer usuarioId,
+            @RequestParam(name = "pacienteId", required = false) Integer pacienteId
+    ) throws GeneralException {
         return new GeneralResponse<>("Success",String.valueOf(HttpStatus.OK),"OKAY",
-                consultaService.getConsultas());
+                consultaService.getConsultas(usuarioId, pacienteId));
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -11,7 +11,7 @@ public interface ConsultaService {
 
     ConsultaDTO getConsultaById(Integer id) throws GeneralException;
 
-    List<ConsultaDTO> getConsultas() throws GeneralException;
+    List<ConsultaDTO> getConsultas(Integer usuarioId, Integer pacienteId) throws GeneralException;
 
     ConsultaDTO updateConsulta(ConsultaDTO consultaDTO) throws GeneralException;
 

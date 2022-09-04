@@ -90,8 +90,8 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
-    public List<ConsultaDTO> getConsultas() throws GeneralException {
-        List<Consulta> consultas = consultaRepository.findAll();
+    public List<ConsultaDTO> getConsultas(Integer usuarioId, Integer pacienteId) throws GeneralException {
+        List<Consulta> consultas = consultaRepository.findConsultaEntity(usuarioId, pacienteId);
         List<ConsultaDTO> consultasDTO = new ArrayList<>();
         for (Consulta consulta: consultas){
             consultasDTO.add(toConsultaDto(consulta));
