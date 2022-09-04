@@ -46,8 +46,8 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Override
-    public List<PacienteDTO> getPacientes() throws GeneralException {
-        List<Paciente> pacientes = pacienteRepository.findAll();
+    public List<PacienteDTO> getPacientes(Integer usuarioId) throws GeneralException {
+        List<Paciente> pacientes = pacienteRepository.findPacienteEntity(usuarioId);
         return pacientes.stream().map(paciente -> modelMapper.map(paciente, PacienteDTO.class)).collect(Collectors.toList());
     }
 

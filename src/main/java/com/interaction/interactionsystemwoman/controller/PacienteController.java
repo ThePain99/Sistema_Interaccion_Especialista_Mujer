@@ -33,9 +33,11 @@ public class PacienteController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
-    public GeneralResponse<List<PacienteDTO>> getPacientes() throws GeneralException {
+    public GeneralResponse<List<PacienteDTO>> getPacientes(
+            @RequestParam(name = "usuarioId", required = false) Integer usuarioId
+            ) throws GeneralException {
         return new GeneralResponse<>("Success",String.valueOf(HttpStatus.OK),"OKAY",
-                pacienteService.getPacientes());
+                pacienteService.getPacientes(usuarioId));
     }
 
     @ResponseStatus(HttpStatus.OK)

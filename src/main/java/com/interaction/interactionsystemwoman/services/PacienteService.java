@@ -11,7 +11,7 @@ public interface PacienteService {
 
     PacienteDTO getPacienteById(Integer id) throws GeneralException;
 
-    List<PacienteDTO> getPacientes() throws GeneralException;
+    List<PacienteDTO> getPacientes(Integer usuarioId) throws GeneralException;
 
     PacienteDTO updatePaciente(PacienteDTO pacienteDTO) throws GeneralException;
 
