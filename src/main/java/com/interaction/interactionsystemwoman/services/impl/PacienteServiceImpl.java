@@ -1,18 +1,25 @@
 package com.interaction.interactionsystemwoman.services.impl;
 
 import com.interaction.interactionsystemwoman.dto.PacienteDTO;
+import com.interaction.interactionsystemwoman.entity.Consulta;
 import com.interaction.interactionsystemwoman.entity.Paciente;
+import com.interaction.interactionsystemwoman.entity.Violencia;
+import com.interaction.interactionsystemwoman.entity.ViolenciaConsulta;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.exceptions.InternalServerErrorException;
 import com.interaction.interactionsystemwoman.exceptions.NotFoundException;
 import com.interaction.interactionsystemwoman.repository.ConsultaRepository;
 import com.interaction.interactionsystemwoman.repository.PacienteRepository;
+import com.interaction.interactionsystemwoman.repository.ViolenciaConsultaRepository;
+import com.interaction.interactionsystemwoman.repository.ViolenciaRepository;
 import com.interaction.interactionsystemwoman.services.PacienteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +32,12 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Autowired
     private ConsultaRepository consultaRepository;
+
+    @Autowired
+    private ViolenciaRepository violenciaRepository;
+
+    @Autowired
+    private ViolenciaConsultaRepository violenciaConsultaRepository;
 
     @Override
     public PacienteDTO createPaciente(PacienteDTO pacienteDTO) throws GeneralException {
@@ -48,6 +61,15 @@ public class PacienteServiceImpl implements PacienteService {
     public PacienteDTO getPacienteById(Integer id, Integer usuarioId) throws GeneralException {
         PacienteDTO pacienteDTO = modelMapper.map(getPacienteEntity(id), PacienteDTO.class);
         pacienteDTO.setConsultaCount(consultaRepository.countConsultaEntity(usuarioId, id));
+
+        List<Consulta> consultas = consultaRepository.findConsultaEntity(usuarioId, id);
+        Set<String> violencias = new HashSet<>();
+        for(Consulta consulta : consultas){
+            for(ViolenciaConsulta violenciaConsulta : consulta.getViolenciaConsultas()){
+                violencias.add(violenciaConsulta.getViolencia().getViolencia());
+            }
+        }
+        pacienteDTO.setViolencias(violencias);
         return pacienteDTO;
     }
 
@@ -57,6 +79,15 @@ public class PacienteServiceImpl implements PacienteService {
         List<PacienteDTO> pacientesDTO = pacientes.stream().map(paciente -> modelMapper.map(paciente, PacienteDTO.class)).collect(Collectors.toList());
         for (PacienteDTO pacienteDTO: pacientesDTO) {
             pacienteDTO.setConsultaCount(consultaRepository.countConsultaEntity(usuarioId, pacienteDTO.getId()));
+
+            List<Consulta> consultas = consultaRepository.findConsultaEntity(usuarioId, pacienteDTO.getId());
+            Set<String> violencias = new HashSet<>();
+            for(Consulta consulta : consultas){
+                for(ViolenciaConsulta violenciaConsulta : consulta.getViolenciaConsultas()){
+                    violencias.add(violenciaConsulta.getViolencia().getViolencia());
+                }
+            }
+            pacienteDTO.setViolencias(violencias);
         }
         return pacientesDTO;
     }

@@ -3,6 +3,7 @@ package com.interaction.interactionsystemwoman.controller;
 import com.interaction.interactionsystemwoman.dto.PacienteDTO;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.responses.GeneralResponse;
+import com.interaction.interactionsystemwoman.services.ConsultaService;
 import com.interaction.interactionsystemwoman.services.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,9 @@ public class PacienteController {
 
     @Autowired
     private PacienteService pacienteService;
+
+    @Autowired
+    private ConsultaService consultaService;
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()

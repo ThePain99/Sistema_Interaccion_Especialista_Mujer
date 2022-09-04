@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,5 +18,6 @@ public class PacienteDTO {
     private String dni;
     private String correo;
     private Integer numero;
+    private Set<String> violencias = new HashSet<>();
     private Long consultaCount;
 }
