@@ -17,4 +17,13 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
     List<Consulta> findConsultaEntity(
             @Param("usuarioId")Integer usuarioId,
             @Param("pacienteId")Integer pacienteId);
+
+    @Query("select count(c) from Consulta c " +
+            "where (c.usuario.id = :usuarioId or :usuarioId is null) " +
+            "and (c.paciente.id = :pacienteId or :pacienteId is null) "
+    )
+    Long countConsultaEntity(
+            @Param("usuarioId")Integer usuarioId,
+            @Param("pacienteId")Integer pacienteId);
+
 }

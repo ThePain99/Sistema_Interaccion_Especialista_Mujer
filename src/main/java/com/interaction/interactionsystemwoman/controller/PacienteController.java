@@ -26,9 +26,12 @@ public class PacienteController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public GeneralResponse<PacienteDTO> getPacienteById(@PathVariable Integer id) throws GeneralException{
+    public GeneralResponse<PacienteDTO> getPacienteById(
+            @PathVariable Integer id,
+            @RequestParam(name = "usuarioId", required = false) Integer usuarioId
+    ) throws GeneralException{
         return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
-                pacienteService.getPacienteById(id));
+                pacienteService.getPacienteById(id, usuarioId));
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -16,4 +16,5 @@ public class PacienteDTO {
     private String dni;
     private String correo;
     private Integer numero;
+    private Long consultaCount;
 }

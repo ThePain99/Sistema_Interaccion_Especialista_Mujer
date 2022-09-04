@@ -5,6 +5,7 @@ import com.interaction.interactionsystemwoman.entity.Paciente;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.exceptions.InternalServerErrorException;
 import com.interaction.interactionsystemwoman.exceptions.NotFoundException;
+import com.interaction.interactionsystemwoman.repository.ConsultaRepository;
 import com.interaction.interactionsystemwoman.repository.PacienteRepository;
 import com.interaction.interactionsystemwoman.services.PacienteService;
 import org.modelmapper.ModelMapper;
@@ -21,6 +22,9 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Autowired
     private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private ConsultaRepository consultaRepository;
 
     @Override
     public PacienteDTO createPaciente(PacienteDTO pacienteDTO) throws GeneralException {
@@ -41,14 +45,20 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Override
-    public PacienteDTO getPacienteById(Integer id) throws GeneralException {
-        return modelMapper.map(getPacienteEntity(id), PacienteDTO.class);
+    public PacienteDTO getPacienteById(Integer id, Integer usuarioId) throws GeneralException {
+        PacienteDTO pacienteDTO = modelMapper.map(getPacienteEntity(id), PacienteDTO.class);
+        pacienteDTO.setConsultaCount(consultaRepository.countConsultaEntity(usuarioId, id));
+        return pacienteDTO;
     }
 
     @Override
     public List<PacienteDTO> getPacientes(Integer usuarioId) throws GeneralException {
         List<Paciente> pacientes = pacienteRepository.findPacienteEntity(usuarioId);
-        return pacientes.stream().map(paciente -> modelMapper.map(paciente, PacienteDTO.class)).collect(Collectors.toList());
+        List<PacienteDTO> pacientesDTO = pacientes.stream().map(paciente -> modelMapper.map(paciente, PacienteDTO.class)).collect(Collectors.toList());
+        for (PacienteDTO pacienteDTO: pacientesDTO) {
+            pacienteDTO.setConsultaCount(consultaRepository.countConsultaEntity(usuarioId, pacienteDTO.getId()));
+        }
+        return pacientesDTO;
     }
 
     @Override

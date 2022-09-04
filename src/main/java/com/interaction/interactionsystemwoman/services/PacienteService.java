@@ -9,7 +9,7 @@ public interface PacienteService {
     
     PacienteDTO createPaciente(PacienteDTO createEntityADto) throws GeneralException;
 
-    PacienteDTO getPacienteById(Integer id) throws GeneralException;
+    PacienteDTO getPacienteById(Integer id, Integer usuarioId) throws GeneralException;
 
     List<PacienteDTO> getPacientes(Integer usuarioId) throws GeneralException;
 

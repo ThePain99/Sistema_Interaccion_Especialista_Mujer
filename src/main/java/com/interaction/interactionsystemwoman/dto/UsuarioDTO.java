@@ -19,4 +19,5 @@ public class UsuarioDTO {
     private Boolean estado;
     private Boolean tipo;
     private Integer modalidadId;
+    private Long consultaCount;
 }

@@ -6,6 +6,7 @@ import com.interaction.interactionsystemwoman.entity.Usuario;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.exceptions.InternalServerErrorException;
 import com.interaction.interactionsystemwoman.exceptions.NotFoundException;
+import com.interaction.interactionsystemwoman.repository.ConsultaRepository;
 import com.interaction.interactionsystemwoman.repository.ModalidadRepository;
 import com.interaction.interactionsystemwoman.repository.UsuarioRepository;
 import com.interaction.interactionsystemwoman.services.UsuarioService;
@@ -25,6 +26,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private ModalidadRepository modalidadRepository;
+
+    @Autowired
+    private ConsultaRepository consultaRepository;
 
     @Override
     public UsuarioDTO createUsuario(UsuarioDTO usuarioDTO) throws GeneralException {
@@ -56,6 +60,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDTO getUsuarioById(Integer id) throws GeneralException {
         UsuarioDTO returnUsuarioDTO = modelMapper.map(getUsuarioEntity(id), UsuarioDTO.class);
         returnUsuarioDTO.setContrasena(null);
+        returnUsuarioDTO.setConsultaCount(consultaRepository.countConsultaEntity(id, null));
         return returnUsuarioDTO;
     }
 
@@ -71,7 +76,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<UsuarioDTO> getUsuarios() throws GeneralException {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        return usuarios.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class)).collect(Collectors.toList());
+        List<UsuarioDTO> usuariosDTO = usuarios.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class)).collect(Collectors.toList());
+        for(UsuarioDTO usuarioDTO: usuariosDTO){
+            usuarioDTO.setConsultaCount(consultaRepository.countConsultaEntity(usuarioDTO.getId(), null));
+        }
+        return usuariosDTO;
     }
 
     @Override
