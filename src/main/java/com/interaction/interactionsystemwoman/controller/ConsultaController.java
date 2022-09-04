@@ -52,4 +52,29 @@ public class ConsultaController {
         return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 "Delete OK");
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/violencias/{id}")
+    public GeneralResponse<String> updateAddViolencia(
+            @PathVariable Integer id,
+            @RequestParam(name = "violenciaNombre", required = true) String violenciaNombre
+    ) throws GeneralException{
+
+        consultaService.updateAddViolencia(id, violenciaNombre);
+        return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                "Update OK");
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/violencias/{id}")
+    public GeneralResponse<String> updateRemoveViolencia(
+            @PathVariable Integer id,
+            @RequestParam(name = "violenciaNombre", required = true) String violenciaNombre
+    ) throws GeneralException{
+
+        consultaService.updateRemoveViolencia(id, violenciaNombre);
+        return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                "Update OK");
+    }
 }

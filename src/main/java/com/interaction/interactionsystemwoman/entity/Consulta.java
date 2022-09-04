@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="consulta")
@@ -89,20 +91,12 @@ public class Consulta {
     )*/
     private Paciente paciente;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "id_Violencia",
-            nullable = false,
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(
-                    name="violencia_consulta_fk"
-            )
+    @OneToMany(
+            mappedBy = "consulta",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
     )
-    /*@Column(
-            name = "idViolencia",
-            nullable = false
-    )*/
-    private Violencia violencia;
+    private List<ViolenciaConsulta> violenciaConsultas =new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(

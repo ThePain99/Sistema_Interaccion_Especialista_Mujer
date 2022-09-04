@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +21,7 @@ public class ConsultaDTO {
     private Integer usuarioId;
     private Integer estadoConsultaId;
     private Integer pacienteId;
-    private Integer violenciaId;
+    private List<String> violencias = new ArrayList<>();
     private Integer modalidadId;
 
 }

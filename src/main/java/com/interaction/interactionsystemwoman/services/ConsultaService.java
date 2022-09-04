@@ -15,5 +15,9 @@ public interface ConsultaService {
 
     ConsultaDTO updateConsulta(ConsultaDTO consultaDTO) throws GeneralException;
 
+    void updateAddViolencia(Integer id, String violenciaNombre) throws GeneralException;
+
+    void updateRemoveViolencia(Integer id, String violenciaNombre) throws GeneralException;
+
     void deleteConsulta(Integer id) throws GeneralException;
 }

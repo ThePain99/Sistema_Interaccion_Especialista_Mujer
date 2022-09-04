@@ -35,5 +35,5 @@ public class Violencia {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
-    private List<Consulta> consultas =new ArrayList<>();
+    private List<ViolenciaConsulta> violenciaConsultas =new ArrayList<>();
 }
