@@ -32,6 +32,13 @@ public class UsuarioController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("login/{correo}/{contrasena}")
+    public GeneralResponse<UsuarioDTO> login(@PathVariable String correo, @PathVariable String contrasena) throws GeneralException{
+        return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                usuarioService.getUsuarioByCorreoandContrasena(correo, contrasena));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public GeneralResponse<List<UsuarioDTO>> getUsuarios() throws GeneralException {
         return new GeneralResponse<>("Success",String.valueOf(HttpStatus.OK),"OKAY",

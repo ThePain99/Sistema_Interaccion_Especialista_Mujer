@@ -11,6 +11,8 @@ public interface UsuarioService {
 
     UsuarioDTO getUsuarioById(Integer id) throws GeneralException;
 
+    UsuarioDTO getUsuarioByCorreoandContrasena(String Correo, String Contrasena) throws GeneralException;
+
     List<UsuarioDTO> getUsuarios() throws GeneralException;
 
     UsuarioDTO updateUsuario(UsuarioDTO UsuarioDTO) throws GeneralException;

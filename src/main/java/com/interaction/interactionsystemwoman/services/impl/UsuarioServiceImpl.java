@@ -1,8 +1,6 @@
 package com.interaction.interactionsystemwoman.services.impl;
 
-import com.interaction.interactionsystemwoman.dto.ConsultaDTO;
 import com.interaction.interactionsystemwoman.dto.UsuarioDTO;
-import com.interaction.interactionsystemwoman.entity.Consulta;
 import com.interaction.interactionsystemwoman.entity.Modalidad;
 import com.interaction.interactionsystemwoman.entity.Usuario;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
@@ -48,12 +46,26 @@ public class UsuarioServiceImpl implements UsuarioService {
         } catch (Exception ex) {
             throw new InternalServerErrorException("INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR");
         }
-        return modelMapper.map(getUsuarioEntity(usuario.getId()), UsuarioDTO.class);
+
+        UsuarioDTO returnUsuarioDTO = modelMapper.map(getUsuarioEntity(usuario.getId()), UsuarioDTO.class);
+        returnUsuarioDTO.setContrasena(null);
+        return returnUsuarioDTO;
     }
 
     @Override
     public UsuarioDTO getUsuarioById(Integer id) throws GeneralException {
-        return modelMapper.map(getUsuarioEntity(id), UsuarioDTO.class);
+        UsuarioDTO returnUsuarioDTO = modelMapper.map(getUsuarioEntity(id), UsuarioDTO.class);
+        returnUsuarioDTO.setContrasena(null);
+        return returnUsuarioDTO;
+    }
+
+    @Override
+    public UsuarioDTO getUsuarioByCorreoandContrasena(String correo, String contrasena) throws GeneralException {
+        Usuario usuario = usuarioRepository.findByCorreoAndContrasena(correo, contrasena)
+                .orElseThrow(() -> new NotFoundException("NOT FOUND-404","USUARIO_NOTFOUND-404"));
+        UsuarioDTO usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        usuarioDTO.setContrasena(null);
+        return usuarioDTO;
     }
 
     @Override
@@ -85,7 +97,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         } catch (Exception ex) {
             throw new InternalServerErrorException("INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR");
         }
-        return modelMapper.map(getUsuarioEntity(usuario.getId()), UsuarioDTO.class);    }
+        UsuarioDTO returnUsuarioDTO = modelMapper.map(getUsuarioEntity(usuario.getId()), UsuarioDTO.class);
+        returnUsuarioDTO.setContrasena(null);
+        return returnUsuarioDTO;
+    }
 
     @Override
     public void deleteUsuario(Integer id) throws GeneralException {
