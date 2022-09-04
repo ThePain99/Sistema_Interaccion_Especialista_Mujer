@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path="/interaction/paciente")
+@CrossOrigin
 public class PacienteController {
 
     @Autowired
