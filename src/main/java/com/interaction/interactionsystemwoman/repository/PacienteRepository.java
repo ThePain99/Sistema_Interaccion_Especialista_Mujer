@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
     @Query("select distinct p from Paciente p " +
-            "join Consulta c on c.paciente.id = p.id " +
+            "left join Consulta c on c.paciente.id = p.id " +
             "where (c.usuario.id = :usuarioId or :usuarioId is null) "
     )
     List<Paciente> findPacienteEntity(
