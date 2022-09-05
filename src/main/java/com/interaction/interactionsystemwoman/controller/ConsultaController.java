@@ -1,6 +1,7 @@
 package com.interaction.interactionsystemwoman.controller;
 
 import com.interaction.interactionsystemwoman.dto.ConsultaDTO;
+import com.interaction.interactionsystemwoman.dto.CreateConsultaDTO;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.responses.GeneralResponse;
 import com.interaction.interactionsystemwoman.services.ConsultaService;
@@ -20,7 +21,7 @@ public class ConsultaController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public GeneralResponse<ConsultaDTO> createConsulta (@RequestBody ConsultaDTO consultaDTO) throws GeneralException {
+    public GeneralResponse<CreateConsultaDTO> createConsulta (@RequestBody CreateConsultaDTO consultaDTO) throws GeneralException {
         return new GeneralResponse<>("Success",String.valueOf(HttpStatus.OK), "OK",
                 consultaService.createConsulta(consultaDTO));
     }
@@ -44,7 +45,7 @@ public class ConsultaController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping()
-    public GeneralResponse<ConsultaDTO> updateConsulta(@RequestBody ConsultaDTO consultaDTO) throws GeneralException{
+    public GeneralResponse<CreateConsultaDTO> updateConsulta(@RequestBody CreateConsultaDTO consultaDTO) throws GeneralException{
         return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 consultaService.updateConsulta(consultaDTO));
     }

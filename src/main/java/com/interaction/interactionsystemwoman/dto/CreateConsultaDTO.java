@@ -1,6 +1,5 @@
 package com.interaction.interactionsystemwoman.dto;
 
-import com.interaction.interactionsystemwoman.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +13,13 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultaDTO {
+public class CreateConsultaDTO {
     private Integer id;
     private LocalDateTime fechaReserva;
     private String descripcion;
     private Integer usuarioId;
     private Integer estadoConsultaId;
-    private PacienteDTO pacienteId;
+    private Integer pacienteId;
     private List<String> violencias = new ArrayList<>();
     private Integer modalidadId;
 

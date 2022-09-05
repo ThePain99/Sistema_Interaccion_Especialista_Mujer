@@ -1,6 +1,8 @@
 package com.interaction.interactionsystemwoman.services.impl;
 
 import com.interaction.interactionsystemwoman.dto.ConsultaDTO;
+import com.interaction.interactionsystemwoman.dto.CreateConsultaDTO;
+import com.interaction.interactionsystemwoman.dto.PacienteDTO;
 import com.interaction.interactionsystemwoman.entity.*;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.exceptions.InternalServerErrorException;
@@ -37,7 +39,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     private ViolenciaConsultaRepository violenciaConsultaRepository;
 
     @Override
-    public ConsultaDTO createConsulta(ConsultaDTO consultaDTO) throws GeneralException {
+    public CreateConsultaDTO createConsulta(CreateConsultaDTO consultaDTO) throws GeneralException {
         Usuario usuario = usuarioRepository.findById(consultaDTO.getUsuarioId())
                 .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "USUARIO_NOT_FOUND"));
 
@@ -81,7 +83,7 @@ public class ConsultaServiceImpl implements ConsultaService {
             }
         }
 
-        return toConsultaDto(consulta);
+        return toCreateConsultaDto(consulta);
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
-    public ConsultaDTO updateConsulta(ConsultaDTO consultaDTO) throws GeneralException {
+    public CreateConsultaDTO updateConsulta(CreateConsultaDTO consultaDTO) throws GeneralException {
         Consulta consulta = getConsultaEntity(consultaDTO.getId());
 
         if(consultaDTO.getUsuarioId() != null) {
@@ -133,7 +135,7 @@ public class ConsultaServiceImpl implements ConsultaService {
         } catch (Exception ex) {
             throw new InternalServerErrorException("INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR");
         }
-        return toConsultaDto(getConsultaEntity(consulta.getId()));
+        return toCreateConsultaDto(getConsultaEntity(consulta.getId()));
     }
 
     @Override
@@ -174,6 +176,22 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     private ConsultaDTO toConsultaDto(Consulta consulta) throws GeneralException {
         ConsultaDTO consultaDTO = modelMapper.map(getConsultaEntity(consulta.getId()), ConsultaDTO.class);
+        Paciente paciente = pacienteRepository.findById(consultaDTO.getPacienteId().getId())
+                .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "PACIENTE_NOT_FOUND"));
+        consultaDTO.setPacienteId(modelMapper.map(paciente, PacienteDTO.class));
+
+        List<ViolenciaConsulta> violenciaConsultas = violenciaConsultaRepository.findByConsulta(consulta).get();
+        List<String> violencias = new ArrayList<>();
+        for(ViolenciaConsulta violenciaConsulta: violenciaConsultas){
+            violencias.add(violenciaConsulta.getViolencia().getViolencia());
+        }
+        consultaDTO.setViolencias(violencias);
+
+        return consultaDTO;
+    }
+
+    private CreateConsultaDTO toCreateConsultaDto(Consulta consulta) throws GeneralException {
+        CreateConsultaDTO consultaDTO = modelMapper.map(getConsultaEntity(consulta.getId()), CreateConsultaDTO.class);
 
         List<ViolenciaConsulta> violenciaConsultas = violenciaConsultaRepository.findByConsulta(consulta).get();
         List<String> violencias = new ArrayList<>();

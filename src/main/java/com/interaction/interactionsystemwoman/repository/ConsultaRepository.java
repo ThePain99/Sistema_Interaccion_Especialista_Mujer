@@ -18,6 +18,12 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
             @Param("usuarioId")Integer usuarioId,
             @Param("pacienteId")Integer pacienteId);
 
+    @Query("select c from Consulta c " +
+            "where (c.usuario.id = :usuarioId or :usuarioId is null) "
+    )
+    List<Consulta> findConsultaByUserIdEntity(
+            @Param("usuarioId")Integer usuarioId);
+
     @Query("select count(c) from Consulta c " +
             "where (c.usuario.id = :usuarioId or :usuarioId is null) " +
             "and (c.paciente.id = :pacienteId or :pacienteId is null) "
