@@ -1,8 +1,6 @@
 package com.interaction.interactionsystemwoman.services.impl;
 
-import com.interaction.interactionsystemwoman.dto.ConsultaDTO;
-import com.interaction.interactionsystemwoman.dto.CreateConsultaDTO;
-import com.interaction.interactionsystemwoman.dto.PacienteDTO;
+import com.interaction.interactionsystemwoman.dto.*;
 import com.interaction.interactionsystemwoman.entity.*;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.exceptions.InternalServerErrorException;
@@ -176,9 +174,18 @@ public class ConsultaServiceImpl implements ConsultaService {
 
     private ConsultaDTO toConsultaDto(Consulta consulta) throws GeneralException {
         ConsultaDTO consultaDTO = modelMapper.map(getConsultaEntity(consulta.getId()), ConsultaDTO.class);
-        Paciente paciente = pacienteRepository.findById(consultaDTO.getPacienteId().getId())
+
+        Paciente paciente = pacienteRepository.findById(consultaDTO.getPaciente().getId())
                 .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "PACIENTE_NOT_FOUND"));
-        consultaDTO.setPacienteId(modelMapper.map(paciente, PacienteDTO.class));
+        consultaDTO.setPaciente(modelMapper.map(paciente, PacienteDTO.class));
+
+        Modalidad modalidad = modalidadRepository.findById(consultaDTO.getModalidad().getId())
+                .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "MODALIDAD_NOT_FOUND"));
+        consultaDTO.setModalidad(modelMapper.map(modalidad, ModalidadDTO.class));
+
+        EstadoConsulta estadoConsulta = estadoConsultaRepository.findById(consultaDTO.getEstadoConsulta().getId())
+                .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "ESTADOCONSULTA_NOT_FOUND"));
+        consultaDTO.setEstadoConsulta(modelMapper.map(estadoConsulta, EstadoConsultaDTO.class));
 
         List<ViolenciaConsulta> violenciaConsultas = violenciaConsultaRepository.findByConsulta(consulta).get();
         List<String> violencias = new ArrayList<>();

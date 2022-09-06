@@ -19,9 +19,9 @@ public class ConsultaDTO {
     private LocalDateTime fechaReserva;
     private String descripcion;
     private Integer usuarioId;
-    private Integer estadoConsultaId;
-    private PacienteDTO pacienteId;
+    private EstadoConsultaDTO estadoConsulta;
+    private PacienteDTO paciente;
     private List<String> violencias = new ArrayList<>();
-    private Integer modalidadId;
+    private ModalidadDTO modalidad;
 
 }
