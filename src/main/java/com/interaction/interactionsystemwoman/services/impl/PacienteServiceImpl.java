@@ -1,17 +1,11 @@
 package com.interaction.interactionsystemwoman.services.impl;
 
 import com.interaction.interactionsystemwoman.dto.PacienteDTO;
-import com.interaction.interactionsystemwoman.entity.Consulta;
-import com.interaction.interactionsystemwoman.entity.Paciente;
-import com.interaction.interactionsystemwoman.entity.Violencia;
-import com.interaction.interactionsystemwoman.entity.ViolenciaConsulta;
+import com.interaction.interactionsystemwoman.entity.*;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
 import com.interaction.interactionsystemwoman.exceptions.InternalServerErrorException;
 import com.interaction.interactionsystemwoman.exceptions.NotFoundException;
-import com.interaction.interactionsystemwoman.repository.ConsultaRepository;
-import com.interaction.interactionsystemwoman.repository.PacienteRepository;
-import com.interaction.interactionsystemwoman.repository.ViolenciaConsultaRepository;
-import com.interaction.interactionsystemwoman.repository.ViolenciaRepository;
+import com.interaction.interactionsystemwoman.repository.*;
 import com.interaction.interactionsystemwoman.services.PacienteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +28,7 @@ public class PacienteServiceImpl implements PacienteService {
     private ConsultaRepository consultaRepository;
 
     @Autowired
-    private ViolenciaRepository violenciaRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private ViolenciaConsultaRepository violenciaConsultaRepository;
@@ -42,12 +36,16 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public PacienteDTO createPaciente(PacienteDTO pacienteDTO) throws GeneralException {
 
+        Usuario usuario = usuarioRepository.findById(pacienteDTO.getUsuarioId())
+                .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "USUARIO_NOT_FOUND"));
+
         Paciente paciente = new Paciente();
         paciente.setNombre(pacienteDTO.getNombre());
         paciente.setApellido(pacienteDTO.getApellido());
         paciente.setDni(pacienteDTO.getDni());
         paciente.setCorreo(pacienteDTO.getCorreo());
         paciente.setNumero(pacienteDTO.getNumero());
+        paciente.setUsuario(usuario);
 
         try {
             paciente = pacienteRepository.save(paciente);

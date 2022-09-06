@@ -65,6 +65,21 @@ public class Paciente {
     )
     private Integer numero;
 
+    @ManyToOne
+    @JoinColumn(
+            name = "id_Usuario",
+            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(
+                    name="usuario_fk"
+            )
+    )
+    /*@Column(
+            name = "idPaciente",
+            nullable = false
+    )*/
+    private Usuario usuario;
+
     @OneToMany(
             mappedBy = "paciente",
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},

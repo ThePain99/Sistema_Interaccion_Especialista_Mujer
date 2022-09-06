@@ -13,6 +13,8 @@ public interface UsuarioService {
 
     UsuarioDTO getUsuarioByCorreoandContrasena(String Correo, String Contrasena) throws GeneralException;
 
+    UsuarioDTO getUsuarioByCorreo(String Correo) throws GeneralException;
+
     List<UsuarioDTO> getUsuarios() throws GeneralException;
 
     UsuarioDTO updateUsuario(UsuarioDTO UsuarioDTO) throws GeneralException;

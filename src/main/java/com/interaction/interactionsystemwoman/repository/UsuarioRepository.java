@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Optional<Usuario> findByCorreoAndContrasena(String Correo, String Contrasena);
+    Optional<Usuario> findByCorreo(String Correo);
 
 }

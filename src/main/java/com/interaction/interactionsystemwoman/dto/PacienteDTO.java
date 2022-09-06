@@ -18,6 +18,7 @@ public class PacienteDTO {
     private String dni;
     private String correo;
     private Integer numero;
+    private Integer usuarioId;
     private Set<String> violencias = new HashSet<>();
     private Long consultaCount;
 }

@@ -74,6 +74,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public UsuarioDTO getUsuarioByCorreo(String correo) throws GeneralException {
+        Usuario usuario = usuarioRepository.findByCorreo(correo)
+                .orElseThrow(() -> new NotFoundException("NOT FOUND-404","USUARIO_NOTFOUND-404"));
+        UsuarioDTO usuarioDTO = modelMapper.map(usuario, UsuarioDTO.class);
+        usuarioDTO.setContrasena(null);
+        return usuarioDTO;
+    }
+
+    @Override
     public List<UsuarioDTO> getUsuarios() throws GeneralException {
         List<Usuario> usuarios = usuarioRepository.findAll();
         List<UsuarioDTO> usuariosDTO = usuarios.stream().map(usuario -> modelMapper.map(usuario, UsuarioDTO.class)).collect(Collectors.toList());

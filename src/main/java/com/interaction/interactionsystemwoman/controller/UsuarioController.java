@@ -40,6 +40,13 @@ public class UsuarioController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("recover/{correo}")
+    public GeneralResponse<UsuarioDTO> recover(@PathVariable String correo) throws GeneralException{
+        return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                usuarioService.getUsuarioByCorreo(correo));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public GeneralResponse<List<UsuarioDTO>> getUsuarios() throws GeneralException {
         return new GeneralResponse<>("Success",String.valueOf(HttpStatus.OK),"OKAY",
