@@ -25,7 +25,7 @@ public class Modalidad {
 
     @Column(
             name = "modalidad",
-            nullable = false,
+            //nullable = false,
             columnDefinition = "TEXT"
     )
     private String modalidad;
