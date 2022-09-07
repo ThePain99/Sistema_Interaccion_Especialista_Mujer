@@ -81,7 +81,6 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(
             name = "id_Modalidad",
-            nullable = false,
             referencedColumnName = "id",
             foreignKey = @ForeignKey(
                     name="modalidad_usuario_fk"
