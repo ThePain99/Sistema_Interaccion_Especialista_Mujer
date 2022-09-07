@@ -32,8 +32,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioDTO createUsuario(UsuarioDTO usuarioDTO) throws GeneralException {
-        Modalidad modalidad = modalidadRepository.findById(usuarioDTO.getModalidadId())
-                .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "MODALIDAD_NOT_FOUND"));
+        Modalidad modalidad;
+
+        if(usuarioDTO.getModalidadId() != null) {
+            modalidad = modalidadRepository.findById(usuarioDTO.getModalidadId())
+                    .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "MODALIDAD_NOT_FOUND"));
+        } else {
+            modalidad = null;
+        }
 
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioDTO.getNombre());
@@ -96,12 +102,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDTO updateUsuario(UsuarioDTO usuarioDTO) throws GeneralException {
         Usuario usuario = getUsuarioEntity(usuarioDTO.getId());
 
+        Modalidad modalidad;
+
         if(usuarioDTO.getModalidadId() != null) {
-            Modalidad modalidad = modalidadRepository.findById(usuarioDTO.getModalidadId())
+            modalidad = modalidadRepository.findById(usuarioDTO.getModalidadId())
                     .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "MODALIDAD_NOT_FOUND"));
-            usuario.setModalidad(modalidad);
+        } else {
+            modalidad = null;
         }
 
+        usuario.setModalidad(modalidad);
         usuario.setNombre(usuarioDTO.getNombre() != null ? usuarioDTO.getNombre() : usuario.getNombre());
         usuario.setApellido(usuarioDTO.getApellido() != null ? usuarioDTO.getApellido() : usuario.getApellido());
         usuario.setDni(usuarioDTO.getDni() != null ? usuarioDTO.getDni() : usuario.getDni());
