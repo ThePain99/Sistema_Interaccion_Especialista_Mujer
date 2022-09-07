@@ -12,8 +12,7 @@ import java.util.List;
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
     @Query("select distinct p from Paciente p " +
-            "left join Consulta c on c.paciente.id = p.id " +
-            "where (c.usuario.id = :usuarioId or :usuarioId is null) "
+            "where (p.usuario.id = :usuarioId or :usuarioId is null) "
     )
     List<Paciente> findPacienteEntity(
             @Param("usuarioId")Integer usuarioId);
