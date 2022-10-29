@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
+
+    Consulta findConsultaByPacienteId(Integer pacienteId);
     @Query("select c from Consulta c " +
             "where (c.usuario.id = :usuarioId or :usuarioId is null) " +
             "and (c.paciente.id = :pacienteId or :pacienteId is null) "

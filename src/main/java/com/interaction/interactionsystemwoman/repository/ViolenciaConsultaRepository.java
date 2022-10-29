@@ -14,5 +14,8 @@ public interface ViolenciaConsultaRepository extends JpaRepository<ViolenciaCons
 
     Optional<List<ViolenciaConsulta>> findByConsulta(Consulta consulta);
 
+
     void deleteByConsultaAndViolencia(Consulta consulta, Violencia violencia);
+
+    void deleteAllByConsulta(Consulta consulta);
 }

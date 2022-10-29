@@ -2,7 +2,11 @@ package com.interaction.interactionsystemwoman.controller;
 
 import com.interaction.interactionsystemwoman.dto.ConsultaDTO;
 import com.interaction.interactionsystemwoman.dto.CreateConsultaDTO;
+import com.interaction.interactionsystemwoman.entity.Consulta;
+import com.interaction.interactionsystemwoman.entity.ViolenciaConsulta;
 import com.interaction.interactionsystemwoman.exceptions.GeneralException;
+import com.interaction.interactionsystemwoman.repository.ConsultaRepository;
+import com.interaction.interactionsystemwoman.repository.ViolenciaConsultaRepository;
 import com.interaction.interactionsystemwoman.responses.GeneralResponse;
 import com.interaction.interactionsystemwoman.services.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/interaction/consulta")
@@ -46,6 +51,7 @@ public class ConsultaController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping()
     public GeneralResponse<CreateConsultaDTO> updateConsulta(@RequestBody CreateConsultaDTO consultaDTO) throws GeneralException{
+
         return new GeneralResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 consultaService.updateConsulta(consultaDTO));
     }

@@ -11,14 +11,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
+import javax.persistence.EntityManager;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ConsultaServiceImpl implements ConsultaService {
 
     public static final ModelMapper modelMapper = new ModelMapper();
+
+    private EntityManager entityManager;
 
     @Autowired
     private ConsultaRepository consultaRepository;
@@ -100,6 +106,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
+    @Transactional
     public CreateConsultaDTO updateConsulta(CreateConsultaDTO consultaDTO) throws GeneralException {
         Consulta consulta = getConsultaEntity(consultaDTO.getId());
 
@@ -127,6 +134,23 @@ public class ConsultaServiceImpl implements ConsultaService {
 
         consulta.setFechaReserva(consultaDTO.getFechaReserva() != null ? consultaDTO.getFechaReserva() : consulta.getFechaReserva());
         consulta.setDescripcion(consultaDTO.getDescripcion() != null ? consultaDTO.getDescripcion() : consulta.getDescripcion());
+
+        violenciaConsultaRepository.deleteAllByConsulta(consulta);
+
+        for (String violenciaNombre : consultaDTO.getViolencias()) {
+            Violencia violencia = violenciaRepository.findByViolencia(violenciaNombre)
+                    .orElseThrow(() -> new NotFoundException("NOT_FOUND-401-1", "VIOLENCIA_NOT_FOUND"));
+
+            ViolenciaConsulta violenciaConsulta = new ViolenciaConsulta();
+            violenciaConsulta.setViolencia(violencia);
+            violenciaConsulta.setConsulta(consulta);
+
+            try {
+                violenciaConsultaRepository.save(violenciaConsulta);
+            } catch (Exception ex) {
+                throw new InternalServerErrorException("INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR");
+            }
+        }
 
         try {
             consulta = consultaRepository.save(consulta);
@@ -197,7 +221,7 @@ public class ConsultaServiceImpl implements ConsultaService {
         return consultaDTO;
     }
 
-    private CreateConsultaDTO toCreateConsultaDto(Consulta consulta) throws GeneralException {
+    public CreateConsultaDTO toCreateConsultaDto(Consulta consulta) throws GeneralException {
         CreateConsultaDTO consultaDTO = modelMapper.map(getConsultaEntity(consulta.getId()), CreateConsultaDTO.class);
 
         List<ViolenciaConsulta> violenciaConsultas = violenciaConsultaRepository.findByConsulta(consulta).get();
